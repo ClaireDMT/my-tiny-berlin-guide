@@ -1,0 +1,1266 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Berlin — Mon Guide</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --red:#CC0000;--red-soft:#F5E6E6;--red-dark:#990000;
+  --ink:#111111;--ink2:#444444;--ink3:#888888;
+  --bg:#F5F3F0;--surface:#FFFFFF;--border:#E5E2DD;
+  --gold:#B8922A;--gold-soft:#F7F0DC;
+  --nav-h:60px;
+}
+html{scroll-behavior:smooth}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+  background:var(--bg);color:var(--ink);
+  font-size:16px;line-height:1.5;
+  padding-bottom:calc(var(--nav-h) + env(safe-area-inset-bottom));
+  -webkit-text-size-adjust:100%;
+}
+
+/* HERO */
+.hero{
+  background:var(--ink);color:#fff;
+  padding:2.5rem 1.25rem 2rem;
+  position:relative;overflow:hidden;
+}
+.hero::after{
+  content:'B';
+  position:absolute;right:-0.08em;bottom:-0.25em;
+  font-size:11rem;font-weight:800;
+  color:rgba(204,0,0,0.15);
+  line-height:1;pointer-events:none;
+  font-family:Georgia,serif;
+}
+.hero-label{
+  font-size:11px;letter-spacing:0.18em;text-transform:uppercase;
+  color:rgba(255,255,255,0.4);margin-bottom:0.5rem;
+}
+.hero h1{
+  font-size:3.4rem;font-weight:800;line-height:1;
+  font-family:Georgia,serif;margin-bottom:0.35rem;
+  position:relative;z-index:1;
+}
+.hero-sub{font-size:13px;color:rgba(255,255,255,0.45)}
+
+/* BOTTOM NAV */
+.bottom-nav{
+  position:fixed;bottom:0;left:0;right:0;
+  background:var(--surface);
+  border-top:1px solid var(--border);
+  display:flex;z-index:200;
+  padding-bottom:env(safe-area-inset-bottom);
+  box-shadow:0 -2px 16px rgba(0,0,0,0.07);
+}
+.nav-btn{
+  flex:1;display:flex;flex-direction:column;align-items:center;
+  justify-content:center;gap:3px;
+  padding:10px 4px 8px;
+  background:none;border:none;cursor:pointer;
+  color:var(--ink3);font-size:9px;letter-spacing:0.02em;
+  text-decoration:none;min-height:var(--nav-h);
+  -webkit-tap-highlight-color:transparent;
+  transition:color 0.15s;
+}
+.nav-btn.active{color:var(--red)}
+.nav-btn svg{width:20px;height:20px;stroke-width:1.8}
+
+/* MAIN */
+main{max-width:640px;margin:0 auto}
+
+/* SECTION */
+section{display:none;padding:1.25rem 1rem 1.5rem}
+section.active{display:block}
+
+/* SECTION HEADER */
+.sec-head{
+  display:flex;align-items:center;gap:10px;
+  margin-bottom:1.25rem;padding-bottom:0.75rem;
+  border-bottom:2px solid var(--red);
+}
+.sec-icon{
+  width:36px;height:36px;border-radius:50%;
+  background:white;display:flex;align-items:center;
+  justify-content:center;font-size:16px;flex-shrink:0;
+}
+.sec-title{font-size:1.3rem;font-weight:700;line-height:1.2}
+.sec-count{
+  margin-left:auto;font-size:11px;color:var(--ink3);
+  background:var(--bg);padding:2px 8px;border-radius:20px;
+  border:1px solid var(--border);
+}
+
+/* SUBSECTION */
+.sub-head{
+  font-size:11px;letter-spacing:0.12em;text-transform:uppercase;
+  color:var(--red);font-weight:600;
+  margin:1.5rem 0 0.75rem;
+  display:flex;align-items:center;gap:6px;
+}
+.sub-head::after{content:'';flex:1;height:1px;background:var(--border)}
+
+/* CARD */
+.card{
+  background:var(--surface);border-radius:14px;
+  padding:0;margin-bottom:10px;
+  border:1px solid var(--border);overflow:hidden;
+}
+.card-inner{padding:14px 16px}
+.card-top{display:flex;align-items:flex-start;gap:10px;margin-bottom:6px}
+.card-name{font-size:1rem;font-weight:700;line-height:1.25;color:var(--ink)}
+.card-meta{font-size:12px;color:var(--ink3);margin-top:2px;line-height:1.4}
+.card-desc{font-size:14px;color:var(--ink2);line-height:1.55;margin-bottom:10px}
+.tags{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:10px}
+.tag{
+  font-size:11px;font-weight:600;letter-spacing:0.04em;
+  padding:3px 9px;border-radius:20px;
+}
+.tag-red{background:var(--red-soft);color:var(--red-dark)}
+.tag-gold{background:var(--gold-soft);color:var(--gold)}
+.tag-green{background:#E6F3EA;color:#1D6A35}
+.tag-blue{background:#E6EEF7;color:#1A4A8A}
+
+/* MAP BUTTON — full-width tap target */
+.map-btn{
+  display:flex;align-items:center;justify-content:center;gap:6px;
+  width:100%;padding:11px;
+  background:var(--bg);border:none;border-top:1px solid var(--border);
+  color:var(--red);font-size:13px;font-weight:600;
+  text-decoration:none;cursor:pointer;
+  -webkit-tap-highlight-color:transparent;
+  transition:background 0.15s;
+}
+.map-btn:active{background:var(--red-soft)}
+.map-btn svg{width:15px;height:15px;stroke-width:2;flex-shrink:0}
+
+/* MAISON SPECIAL */
+.maison-card{
+  background:var(--ink);border-radius:14px;
+  overflow:hidden;margin-bottom:10px;
+  border:1px solid rgba(255,255,255,0.08);
+}
+.maison-head{padding:16px 16px 12px}
+.maison-badge{
+  display:inline-block;font-size:10px;letter-spacing:0.1em;
+  text-transform:uppercase;color:var(--gold);font-weight:700;
+  margin-bottom:8px;
+}
+.maison-name{font-size:1.15rem;font-weight:700;color:#fff;margin-bottom:6px}
+.maison-desc{font-size:13px;color:rgba(255,255,255,0.55);line-height:1.5}
+.maison-locs{padding:0 12px 12px;display:flex;flex-direction:column;gap:6px}
+.mloc{
+  background:rgba(255,255,255,0.06);border-radius:10px;
+  padding:10px 12px;
+  display:flex;align-items:center;gap:10px;
+}
+.mloc-txt{flex:1;min-width:0}
+.mloc-name{font-size:13px;font-weight:600;color:#fff;margin-bottom:2px}
+.mloc-hours{font-size:11px;color:rgba(255,255,255,0.4);line-height:1.3}
+.mloc-link{
+  flex-shrink:0;width:34px;height:34px;border-radius:8px;
+  background:rgba(184,146,42,0.2);display:flex;
+  align-items:center;justify-content:center;text-decoration:none;
+  -webkit-tap-highlight-color:transparent;
+}
+.mloc-link svg{width:16px;height:16px;stroke:var(--gold);stroke-width:2}
+
+/* INFO BOX */
+.info-box{
+  background:var(--red-soft);border-radius:10px;padding:12px 14px;
+  font-size:13px;color:var(--red-dark);line-height:1.5;
+  margin-top:4px;
+}
+.info-box strong{font-weight:700}
+.info-box a{color:var(--red)}
+
+/* FILTER PILLS */
+.filter-pills{
+  display:flex;gap:6px;flex-wrap:nowrap;
+  overflow-x:auto;margin-bottom:1.25rem;padding-bottom:2px;
+  -webkit-overflow-scrolling:touch;scrollbar-width:none;
+}
+.filter-pills::-webkit-scrollbar{display:none}
+.fpill{
+  flex-shrink:0;font-size:12px;font-weight:600;
+  padding:7px 14px;border-radius:20px;
+  border:1.5px solid var(--border);
+  background:var(--surface);color:var(--ink2);
+  cursor:pointer;text-decoration:none;white-space:nowrap;
+  transition:background 0.15s,border-color 0.15s,color 0.15s;
+  -webkit-tap-highlight-color:transparent;
+}
+.fpill:active{background:var(--red-soft);color:var(--red-dark);border-color:var(--red)}
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <p class="hero-label">Guide de</p>
+  <h1>Berlin</h1>
+  <p class="hero-sub"></p>
+</div>
+
+<nav class="bottom-nav" role="navigation">
+  <a class="nav-btn active" href="#" data-section="musees">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M3 21h18M3 10h18M5 6l7-3 7 3M4 10v11M20 10v11M8 14v3M12 14v3M16 14v3"/></svg>
+    Musées
+  </a>
+  <a class="nav-btn" href="#" data-section="parcs">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 2L8 8H4l8 6-3 8 3-2 3 2-3-8 8-6h-4z"/></svg>
+    Parcs
+  </a>
+  <a class="nav-btn" href="#" data-section="marches">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4zM3 6h18"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+    Marchés
+  </a>
+  <a class="nav-btn" href="#" data-section="plouf">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M2 12h20M2 17c1.5 0 1.5-1 3-1s1.5 1 3 1 1.5-1 3-1 1.5 1 3 1 1.5-1 3-1"/><circle cx="12" cy="7" r="2"/><path d="M12 9v3"/></svg>
+    Plouf
+  </a>
+  <a class="nav-btn" href="#" data-section="restos">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M3 2v7c0 1.1.9 2 2 2s2-.9 2-2V2M5 11v9M12 2c0 4.4 3 5 3 9H9c0-4 3-4.6 3-9M12 11v9M19 2v20"/></svg>
+    Restos
+  </a>
+  <a class="nav-btn" href="#" data-section="bars">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M8 22h8M12 12v10M4 4h16l-8 8-8-8z"/></svg>
+    Bars
+  </a>
+  <a class="nav-btn" href="#" data-section="cafes">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M17 8h1a3 3 0 010 6h-1M3 8h14v7a4 4 0 01-4 4H7a4 4 0 01-4-4V8zM6 2v3M10 2v3"/></svg>
+    Cafés
+  </a>
+</nav>
+
+<main>
+
+<!-- MUSÉES -->
+<section id="musees" class="active">
+  <div class="sec-head">
+    <div class="sec-icon">🏛</div>
+    <h2 class="sec-title">Musées</h2>
+    <span class="sec-count">12 lieux</span>
+  </div>
+
+  <div class="card">
+    <div class="card-inner">
+      <div class="card-top">
+        <div><div class="card-name">Neues Museum</div><div class="card-meta">Mitte · Île aux Musées</div></div>
+      </div>
+      <div class="tags"><span class="tag tag-red">Égypte antique</span></div>
+      <p class="card-desc">Le buste de Néfertiti, star absolue du musée. Architecture de David Chipperfield — une reconstruction elle-même chef-d'œuvre.</p>
+    </div>
+    <a class="map-btn" href="https://maps.google.com/?q=Neues+Museum+Berlin" target="_blank"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg> Voir sur Maps</a>
+  </div>
+
+  <div class="card">
+    <div class="card-inner">
+      <div class="card-top">
+        <div><div class="card-name">DDR Museum</div><div class="card-meta">Mitte</div></div>
+      </div>
+      <div class="tags"><span class="tag tag-gold">Histoire · Interactif</span></div>
+      <p class="card-desc">Musée ludique sur la vie quotidienne en RDA. On conduit une Trabant, on s'installe dans un appartement d'époque. Très accessible.</p>
+    </div>
+    <a class="map-btn" href="https://maps.google.com/?q=DDR+Museum+Berlin" target="_blank"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg> Voir sur Maps</a>
+  </div>
+
+  <div class="card">
+    <div class="card-inner">
+      <div class="card-top">
+        <div><div class="card-name">Mémorial du Mur</div><div class="card-meta">Mitte</div></div>
+      </div>
+      <div class="tags"><span class="tag tag-green">Gratuit</span><span class="tag tag-gold">Plein air</span></div>
+      <p class="card-desc">Le mémorial du Mur le plus complet. Tours de guet, no man's land reconstitué. Gratuit et en accès libre.</p>
+    </div>
+    <a class="map-btn" href="https://maps.google.com/?q=Gedenkstätte+Berliner+Mauer" target="_blank"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg> Voir sur Maps</a>
+  </div>
+
+  <div class="card">
+    <div class="card-inner">
+      <div class="card-top">
+        <div><div class="card-name">Hamburger Bahnhof</div><div class="card-meta">Mitte</div></div>
+      </div>
+      <div class="tags"><span class="tag tag-blue">Art contemporain</span></div>
+      <p class="card-desc">Dans une ancienne gare, le grand musée d'art contemporain. Beuys, Kiefer, Warhol… Salles à hauteur sous plafond impressionnante.</p>
+    </div>
+    <a class="map-btn" href="https://maps.google.com/?q=Hamburger+Bahnhof+Berlin" target="_blank"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg> Voir sur Maps</a>
+  </div>
+
+  <div class="card">
+    <div class="card-inner">
+      <div class="card-top">
+        <div><div class="card-name">Topographie des Terrors</div><div class="card-meta">Mitte</div></div>
+      </div>
+      <div class="tags"><span class="tag tag-green">Gratuit</span><span class="tag tag-gold">Histoire</span></div>
+      <p class="card-desc">Sur le site de l'ancien QG de la Gestapo. Exposition extérieure permanente, gratuite, avec un segment du Mur.</p>
+    </div>
+    <a class="map-btn" href="https://maps.google.com/?q=Topographie+des+Terrors+Berlin" target="_blank"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg> Voir sur Maps</a>
+  </div>
+
+  <div class="card">
+    <div class="card-inner">
+      <div class="card-top">
+        <div><div class="card-name">Jewish Museum Berlin</div><div class="card-meta">Kreuzberg</div></div>
+      </div>
+      <div class="tags"><span class="tag tag-gold">Histoire</span><span class="tag tag-blue">Architecture</span></div>
+      <p class="card-desc">L'architecture de Libeskind est elle-même un témoignage — la désorientation ressentie est intentionnelle. Expérience muséale unique.</p>
+    </div>
+    <a class="map-btn" href="https://maps.google.com/?q=Jewish+Museum+Berlin" target="_blank"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg> Voir sur Maps</a>
+  </div>
+
+  <div class="card">
+    <div class="card-inner">
+      <div class="card-top">
+        <div><div class="card-name">East Side Gallery</div><div class="card-meta">Friedrichshain</div></div>
+      </div>
+      <div class="tags"><span class="tag tag-green">Gratuit</span><span class="tag tag-gold">Plein air</span></div>
+      <p class="card-desc">1,3 km de fresques sur les derniers pans du Mur debout. L'œuvre de Dmitri Vrubel et 100 autres artistes du monde entier. Accessible à toute heure.</p>
+    </div>
+    <a class="map-btn" href="https://maps.google.com/?q=East+Side+Gallery+Berlin" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg> Voir sur Maps</a>
+  </div>
+
+  <div class="card">
+    <div class="card-inner">
+      <div class="card-top">
+        <div><div class="card-name">Musée de la Stasi</div><div class="card-meta">Lichtenberg</div></div>
+      </div>
+      <div class="tags"><span class="tag tag-gold">Histoire · RDA</span></div>
+      <p class="card-desc">L'ancien quartier général de la Stasi, bureau d'Erich Mielke intact. Dossiers, écoutes, cellules — la machine de surveillance de la RDA grandeur nature.</p>
+    </div>
+    <a class="map-btn" href="https://maps.google.com/?q=Stasi+Museum+Berlin+Lichtenberg" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg> Voir sur Maps</a>
+  </div>
+
+  <div class="card">
+    <div class="card-inner">
+      <div class="card-top">
+        <div><div class="card-name">Berlinische Galerie</div><div class="card-meta">Kreuzberg</div></div>
+      </div>
+      <div class="tags"><span class="tag tag-blue">Art moderne</span></div>
+      <p class="card-desc">L'art de Berlin du XIXe siècle à aujourd'hui. Expressionnisme, Dada, avant-gardes d'Europe de l'Est. Collection permanente et expos temporaires ambitieuses.</p>
+    </div>
+    <a class="map-btn" href="https://maps.google.com/?q=Berlinische+Galerie+Berlin" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg> Voir sur Maps</a>
+  </div>
+
+  <div class="card">
+    <div class="card-inner">
+      <div class="card-top">
+        <div><div class="card-name">Neue Nationalgalerie</div><div class="card-meta">Tiergarten</div></div>
+      </div>
+      <div class="tags"><span class="tag tag-blue">Art moderne</span><span class="tag tag-gold">Architecture · Mies</span></div>
+      <p class="card-desc">Le chef-d'œuvre de Mies van der Rohe — un toit de verre suspendu sur des piliers d'acier. Art du XXe siècle de Picasso à Richter. Bâtiment aussi fort que les œuvres.</p>
+    </div>
+    <a class="map-btn" href="https://maps.google.com/?q=Neue+Nationalgalerie+Berlin" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg> Voir sur Maps</a>
+  </div>
+
+  <div class="card">
+    <div class="card-inner">
+      <div class="card-top">
+        <div><div class="card-name">C/O Berlin</div><div class="card-meta">Charlottenburg · Amerika Haus</div></div>
+      </div>
+      <div class="tags"><span class="tag tag-blue">Photographie</span><span class="tag tag-gold">Expos temporaires</span></div>
+      <p class="card-desc">Le grand musée de la photographie de Berlin, installé dans l'Amerika Haus. Expositions temporaires ambitieuses — de Diane Arbus à Annie Leibovitz. Toujours une raison d'y aller.</p>
+    </div>
+    <a class="map-btn" href="https://maps.app.goo.gl/WzrHgCqSohip7WYT8" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg> Voir sur Maps</a>
+  </div>
+
+  <div class="card">
+    <div class="card-inner">
+      <div class="card-top">
+        <div><div class="card-name">Berlin Unterwelten</div><div class="card-meta">Gesundbrunnen · Wedding</div></div>
+      </div>
+      <div class="tags"><span class="tag tag-gold">Insolite ⭐</span><span class="tag tag-red">Visite guidée</span></div>
+      <p class="card-desc">Les bunkers et tunnels souterrains de Berlin — abris de la Seconde Guerre mondiale, passages secrets de la Guerre froide. Visites guidées en français disponibles. Réserver à l'avance.</p>
+    </div>
+    <a class="map-btn" href="https://maps.app.goo.gl/64Ki6oNnFbKGB9xs9" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg> Voir sur Maps</a>
+  </div>
+</section>
+
+<!-- PARCS -->
+<section id="parcs">
+  <div class="sec-head">
+    <div class="sec-icon">🌳</div>
+    <h2 class="sec-title">Parcs</h2>
+    <span class="sec-count">6 espaces</span>
+  </div>
+
+  <div class="card">
+    <div class="card-inner">
+      <div class="card-top">
+        <div><div class="card-name">Tiergarten</div><div class="card-meta">Tiergarten · 210 ha</div></div>
+      </div>
+      <div class="tags"><span class="tag tag-green">Parc urbain</span></div>
+      <p class="card-desc">Le Central Park berlinois, en plus sauvage. Lacs, sculptures, Siegessäule au centre. Idéal pour pique-niquer.</p>
+    </div>
+    <a class="map-btn" href="https://maps.google.com/?q=Tiergarten+Berlin" target="_blank"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg> Voir sur Maps</a>
+  </div>
+
+  <div class="card">
+    <div class="card-inner">
+      <div class="card-top">
+        <div><div class="card-name">Mauerpark</div><div class="card-meta">Prenzlauer Berg</div></div>
+      </div>
+      <div class="tags"><span class="tag tag-green">Parc</span><span class="tag tag-gold">Flohmarkt dimanche</span></div>
+      <p class="card-desc">L'ancien couloir de la mort du Mur, devenu le parc le plus vivant de Berlin. Dimanche : Flohmarkt + karaoké en plein air dans l'amphithéâtre.</p>
+    </div>
+    <a class="map-btn" href="https://maps.google.com/?q=Mauerpark+Berlin" target="_blank"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg> Voir sur Maps</a>
+  </div>
+
+  <div class="card">
+    <div class="card-inner">
+      <div class="card-top">
+        <div><div class="card-name">Volkspark Friedrichshain</div><div class="card-meta">Friedrichshain</div></div>
+      </div>
+      <div class="tags"><span class="tag tag-green">Parc historique · 1848</span></div>
+      <p class="card-desc">Le plus vieux parc public de Berlin. Fontaine des Contes de Grimm, deux collines avec vue, terrains de sport.</p>
+    </div>
+    <a class="map-btn" href="https://maps.google.com/?q=Volkspark+Friedrichshain+Berlin" target="_blank"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg> Voir sur Maps</a>
+  </div>
+
+  <div class="card">
+    <div class="card-inner">
+      <div class="card-top">
+        <div><div class="card-name">Tempelhofer Feld</div><div class="card-meta">Tempelhof</div></div>
+      </div>
+      <div class="tags"><span class="tag tag-blue">Insolite ⭐</span></div>
+      <p class="card-desc">L'ancien aéroport reconverti en espace public géant. Vélo sur les pistes d'atterrissage, kite, barbecue. L'espace le plus berlinois qui soit.</p>
+    </div>
+    <a class="map-btn" href="https://maps.google.com/?q=Tempelhofer+Feld+Berlin" target="_blank"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg> Voir sur Maps</a>
+  </div>
+
+  <div class="card">
+    <div class="card-inner">
+      <div class="card-top">
+        <div><div class="card-name">Treptower Park</div><div class="card-meta">Alt-Treptow · Bord de Spree</div></div>
+      </div>
+      <div class="tags"><span class="tag tag-green">Gratuit</span><span class="tag tag-gold">Mémorial soviétique</span></div>
+      <p class="card-desc">Grand parc avec le monumental mémorial soviétique de la Seconde Guerre mondiale. Impressionnant, accès libre.</p>
+    </div>
+    <a class="map-btn" href="https://maps.google.com/?q=Treptower+Park+Berlin" target="_blank"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg> Voir sur Maps</a>
+  </div>
+</section>
+
+<!-- MARCHÉS -->
+<section id="marches">
+  <div class="sec-head">
+    <div class="sec-icon">🛒</div>
+    <h2 class="sec-title">Marchés</h2>
+    <span class="sec-count">10 marchés</span>
+  </div>
+
+  <div class="sub-head">🪙 Flohmärkte — Vide-greniers</div>
+
+  <div class="card">
+    <div class="card-inner">
+      <div class="card-top">
+        <div><div class="card-name">Flohmarkt im Mauerpark</div><div class="card-meta">Prenzlauer Berg · Dim 10h–18h</div></div>
+      </div>
+      <div class="tags"><span class="tag tag-gold">Dimanche</span></div>
+      <p class="card-desc">Le plus célèbre de Berlin. Vintage, vinyles, friperie, food trucks. Karaoké en amphithéâtre le matin. Arriver tôt !</p>
+    </div>
+    <a class="map-btn" href="https://maps.google.com/?q=Flohmarkt+Mauerpark+Berlin" target="_blank"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg> Voir sur Maps</a>
+  </div>
+
+  <div class="card">
+    <div class="card-inner">
+      <div class="card-top">
+        <div><div class="card-name">Flohmarkt Boxhagener Platz</div><div class="card-meta">Friedrichshain · Dim 10h–18h</div></div>
+      </div>
+      <div class="tags"><span class="tag tag-gold">Dimanche · Local</span></div>
+      <p class="card-desc">Le Boxi — moins bondé que le Mauerpark, plus authentique. Vintage, kitsch, livres. Pelouse pour souffler entre les stands.</p>
+    </div>
+    <a class="map-btn" href="https://maps.google.com/?q=Flohmarkt+Boxhagener+Platz+Berlin" target="_blank"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg> Voir sur Maps</a>
+  </div>
+
+  <div class="card">
+    <div class="card-inner">
+      <div class="card-top">
+        <div><div class="card-name">Flohmarkt Str. des 17. Juni</div><div class="card-meta">Tiergarten · Sam &amp; Dim 10h–17h</div></div>
+      </div>
+      <div class="tags"><span class="tag tag-gold">Sam &amp; Dim</span><span class="tag tag-red">Antiquités</span></div>
+      <p class="card-desc">Le plus ancien Flohmarkt de Berlin. Antiquités, livres, argenterie, meubles. Prix plus élevés, qualité au rendez-vous.</p>
+    </div>
+    <a class="map-btn" href="https://maps.google.com/?q=Flohmarkt+Straße+des+17+Juni+Berlin" target="_blank"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg> Voir sur Maps</a>
+  </div>
+
+  <div class="card">
+    <div class="card-inner">
+      <div class="card-top">
+        <div><div class="card-name">Nowkölln Flowmarkt</div><div class="card-meta">Neukölln · 1 dim./2</div></div>
+      </div>
+      <div class="tags"><span class="tag tag-blue">Design · Créateurs</span></div>
+      <p class="card-desc">Tous les deux dimanches : créateurs indé, mode upcyclée, bijoux faits main. Plus artisanal que les Flohmärkte classiques.</p>
+    </div>
+    <a class="map-btn" href="https://maps.google.com/?q=Nowkölln+Flowmarkt+Berlin" target="_blank"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg> Voir sur Maps</a>
+  </div>
+
+  <div class="sub-head">🥬 Marchés alimentaires</div>
+
+  <div class="card">
+    <div class="card-inner">
+      <div class="card-top">
+        <div><div class="card-name">Türkenmarkt</div><div class="card-meta">Neukölln · Mar &amp; Ven 11h–18h30</div></div>
+      </div>
+      <div class="tags"><span class="tag tag-red">Mar &amp; Ven</span></div>
+      <p class="card-desc">Le grand marché turc du canal. Fruits, légumes, épices, fromages, olives, tissus. L'âme de Neukölln à son meilleur.</p>
+    </div>
+    <a class="map-btn" href="https://maps.google.com/?q=Türkenmarkt+Maybachufer+Berlin" target="_blank"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg> Voir sur Maps</a>
+  </div>
+
+  <div class="card">
+    <div class="card-inner">
+      <div class="card-top">
+        <div><div class="card-name">Wochenmarkt Kollwitzplatz</div><div class="card-meta">Prenzlauer Berg · Jeu 9h–18h · Sam 9h–16h</div></div>
+      </div>
+      <div class="tags"><span class="tag tag-green">Bio · Producteurs</span></div>
+      <p class="card-desc">Le marché bio de Prenzlauer Berg. Fromages artisanaux, pain de campagne, fleurs. Très chaleureux le samedi.</p>
+    </div>
+    <a class="map-btn" href="https://maps.google.com/?q=Wochenmarkt+Kollwitzplatz+Berlin" target="_blank"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg> Voir sur Maps</a>
+  </div>
+
+  <div class="card">
+    <div class="card-inner">
+      <div class="card-top">
+        <div><div class="card-name">Winterfeldtmarkt</div><div class="card-meta">Schöneberg · Mer 8h–14h · Sam 8h–16h</div></div>
+      </div>
+      <div class="tags"><span class="tag tag-green">Bio · Fleurs</span></div>
+      <p class="card-desc">L'un des plus beaux marchés alimentaires de Berlin. Bio, fromages, poissons, streetfood. Le samedi c'est l'événement du quartier.</p>
+    </div>
+    <a class="map-btn" href="https://maps.google.com/?q=Winterfeldtmarkt+Berlin" target="_blank"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg> Voir sur Maps</a>
+  </div>
+
+  <div class="sub-head">🏬 Markthallen — Halles couvertes</div>
+
+  <div class="card">
+    <div class="card-inner">
+      <div class="card-top">
+        <div><div class="card-name">Markthalle Neun</div><div class="card-meta">Kreuzberg</div></div>
+      </div>
+      <div class="tags"><span class="tag tag-red">Street Food · Jeu soir</span><span class="tag tag-gold">Sam marché</span></div>
+      <p class="card-desc">La halle la plus branchée. Le jeudi soir : Street Food Thursday mythique. Le samedi : marché de producteurs. Arriver tôt !</p>
+    </div>
+    <a class="map-btn" href="https://maps.google.com/?q=Markthalle+Neun+Berlin" target="_blank"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg> Voir sur Maps</a>
+  </div>
+
+  <div class="card">
+    <div class="card-inner">
+      <div class="card-top">
+        <div><div class="card-name">Arminiushalle</div><div class="card-meta">Moabit · Mar–Ven 8h–18h · Sam 8h–16h</div></div>
+      </div>
+      <div class="tags"><span class="tag tag-blue">Locale · 1891</span></div>
+      <p class="card-desc">Moins touristique, plus vraie. Halle en brique avec bouchers, fromagers, bistrot. L'âme d'un vrai marché de quartier.</p>
+    </div>
+    <a class="map-btn" href="https://maps.google.com/?q=Arminiusmarkthalle+Berlin" target="_blank"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg> Voir sur Maps</a>
+  </div>
+
+  <div class="card">
+    <div class="card-inner">
+      <div class="card-top">
+        <div><div class="card-name">Marheineke Markthalle</div><div class="card-meta">Kreuzberg · Lun–Sam 8h–20h</div></div>
+      </div>
+      <div class="tags"><span class="tag tag-red">Bio · Traiteurs</span></div>
+      <p class="card-desc">Au cœur du Bergmann-Kiez. Bio, fromages fins, cave à vin, traiteurs du monde. Marché extérieur le samedi très agréable.</p>
+    </div>
+    <a class="map-btn" href="https://maps.google.com/?q=Marheineke+Markthalle+Berlin" target="_blank"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg> Voir sur Maps</a>
+  </div>
+</section>
+
+<!-- PLOUF -->
+<section id="plouf">
+  <div class="sec-head">
+    <div class="sec-icon">🏊</div>
+    <h2 class="sec-title">Plouf</h2>
+    <span class="sec-count">12 spots</span>
+  </div>
+
+  <div class="sub-head">🏊 Piscines</div>
+
+  <div class="info-box" style="margin-bottom:1rem">
+    <strong>Bon à savoir :</strong> depuis mars 2025, billets par tranche de temps (90 min, 150 min, journée). Réserver en ligne sur <a href="https://www.berlinerbaeder.de" target="_blank">berlinerbaeder.de</a>.
+  </div>
+
+  <div class="card">
+    <div class="card-inner">
+      <div class="card-top">
+        <div><div class="card-name">Badeschiff an der Arena</div><div class="card-meta">Treptow · U Schlesisches Tor</div></div>
+      </div>
+      <div class="tags"><span class="tag tag-blue">Insolite ⭐</span><span class="tag tag-red">Réserver en ligne</span></div>
+      <p class="card-desc">Une péniche convertie en piscine dans la Spree. Vue sur l'Oberbaumbrücke et la tour de TV. Bar sur plage de sable, hamacs. L'expérience estivale berlinoise par excellence.</p>
+    </div>
+    <a class="map-btn" href="https://maps.google.com/?q=Badeschiff+Berlin+Arena" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg> Voir sur Maps</a>
+  </div>
+
+  <div class="card">
+    <div class="card-inner">
+      <div class="card-top">
+        <div><div class="card-name">Prinzenbad — Kreuzberg</div><div class="card-meta">Kreuzberg · U Prinzenstraße</div></div>
+      </div>
+      <div class="tags"><span class="tag tag-red">Très populaire</span></div>
+      <p class="card-desc">La piscine du cœur de Kreuzberg. Grand bassin, plongeoirs, pelouse. Toujours animée — reflet parfait de la diversité berlinoise.</p>
+    </div>
+    <a class="map-btn" href="https://maps.google.com/?q=Prinzenbad+Berlin" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg> Voir sur Maps</a>
+  </div>
+
+  <div class="card">
+    <div class="card-inner">
+      <div class="card-top">
+        <div><div class="card-name">Sommerbad Humboldthain</div><div class="card-meta">Wedding · S Humboldthain</div></div>
+      </div>
+      <div class="tags"><span class="tag tag-blue">50m · Sport</span></div>
+      <p class="card-desc">Bassin de 50 mètres dans le parc Humboldthain. Plongeoir 1m, toboggan, bassin enfants. Moins fréquenté que le Prinzenbad.</p>
+    </div>
+    <a class="map-btn" href="https://maps.google.com/?q=Sommerbad+Humboldthain+Berlin" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg> Voir sur Maps</a>
+  </div>
+
+  <div class="card">
+    <div class="card-inner">
+      <div class="card-top">
+        <div><div class="card-name">Sommerbad Neukölln</div><div class="card-meta">Neukölln</div></div>
+      </div>
+      <div class="tags"><span class="tag tag-green">Familles</span><span class="tag tag-blue">Toboggan 83m</span></div>
+      <p class="card-desc">Toboggan de 83 mètres, plongeoirs, zone enfants. Le paradis des enfants à Berlin.</p>
+    </div>
+    <a class="map-btn" href="https://maps.google.com/?q=Sommerbad+Neukölln+Berlin" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg> Voir sur Maps</a>
+  </div>
+
+  <div class="card">
+    <div class="card-inner">
+      <div class="card-top">
+        <div><div class="card-name">Sommerbad Olympiastadion</div><div class="card-meta">Charlottenburg · S Olympiastadion</div></div>
+      </div>
+      <div class="tags"><span class="tag tag-gold">Historique · 1936</span></div>
+      <p class="card-desc">Piscine classée dans l'enceinte du stade olympique. Bassin 50m, plongeoir 3m. Cadre unique et solennel.</p>
+    </div>
+    <a class="map-btn" href="https://maps.google.com/?q=Sommerbad+Olympiastadion+Berlin" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg> Voir sur Maps</a>
+  </div>
+
+  <div class="card">
+    <div class="card-inner">
+      <div class="card-top">
+        <div><div class="card-name">Strandbad Plötzensee</div><div class="card-meta">Wedding · Tram M13</div></div>
+      </div>
+      <div class="tags"><span class="tag tag-green">Lac naturel · Familles</span></div>
+      <p class="card-desc">Baignade en lac naturel avec grande plage de sable. Idyllique, surveillé, eau contrôlée régulièrement. 30 min du centre.</p>
+    </div>
+    <a class="map-btn" href="https://maps.google.com/?q=Strandbad+Plötzensee+Berlin" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg> Voir sur Maps</a>
+  </div>
+
+  <div class="sub-head">🌊 Lacs</div>
+
+  <div class="card">
+    <div class="card-inner">
+      <div class="card-top">
+        <div><div class="card-name">Strandbad Wannsee</div><div class="card-meta">Zehlendorf · S1/S7</div></div>
+      </div>
+      <div class="tags"><span class="tag tag-blue">Grande plage de sable</span><span class="tag tag-green">Familles</span></div>
+      <p class="card-desc">La grande plage mythique de Berlin. 1,3 km de sable fin sur le Wannsee, eau contrôlée, vestiaires, restaurants. Bondé le week-end — arriver le matin.</p>
+    </div>
+    <a class="map-btn" href="https://maps.google.com/?q=Strandbad+Wannsee+Berlin" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg> Voir sur Maps</a>
+  </div>
+
+  <div class="card">
+    <div class="card-inner">
+      <div class="card-top">
+        <div><div class="card-name">Schlachtensee</div><div class="card-meta">Zehlendorf · S1 Schlachtensee</div></div>
+      </div>
+      <div class="tags"><span class="tag tag-green">Forêt · Eau claire</span></div>
+      <p class="card-desc">Lac forestier en plein Grunewald. Eau froide et propre, entouré de pins. Plages sauvages tout le tour. Un des préférés des Berlinois pour échapper à la ville.</p>
+    </div>
+    <a class="map-btn" href="https://maps.google.com/?q=Schlachtensee+Berlin" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg> Voir sur Maps</a>
+  </div>
+
+  <div class="card">
+    <div class="card-inner">
+      <div class="card-top">
+        <div><div class="card-name">Müggelsee</div><div class="card-meta">Köpenick · S3 Friedrichshagen</div></div>
+      </div>
+      <div class="tags"><span class="tag tag-blue">7,4 km² · Grand lac</span><span class="tag tag-gold">Excursion</span></div>
+      <p class="card-desc">Le plus grand lac de Berlin. Plages, location de bateaux, forêts à l'horizon. Accessible en S-Bahn + ferry depuis Köpenick — l'excursion du dimanche parfaite.</p>
+    </div>
+    <a class="map-btn" href="https://maps.google.com/?q=Müggelsee+Berlin" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg> Voir sur Maps</a>
+  </div>
+
+  <div class="card">
+    <div class="card-inner">
+      <div class="card-top">
+        <div><div class="card-name">Weißensee</div><div class="card-meta">Pankow · Tram M13 Gürtelstraße</div></div>
+      </div>
+      <div class="tags"><span class="tag tag-green">Central · Est de Berlin</span></div>
+      <p class="card-desc">Lac intra-muros facile d'accès, côté Est. Pédalos, café en bord de lac, baignade tranquille. L'alternative aux lacs de l'ouest — sans faire 40 minutes de S-Bahn.</p>
+    </div>
+    <a class="map-btn" href="https://maps.google.com/?q=Weißensee+Strandbad+Berlin" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg> Voir sur Maps</a>
+  </div>
+
+  <div class="card">
+    <div class="card-inner">
+      <div class="card-top">
+        <div><div class="card-name">Krumme Lanke</div><div class="card-meta">Zehlendorf · S1 Krumme Lanke</div></div>
+      </div>
+      <div class="tags"><span class="tag tag-green">Calme · Eau très propre</span></div>
+      <p class="card-desc">Le plus tranquille des lacs du Grunewald. Eau très propre, nettement moins fréquenté que le Schlachtensee. Rive à moitié sauvage — pour fuir le monde.</p>
+    </div>
+    <a class="map-btn" href="https://maps.google.com/?q=Krumme+Lanke+Berlin" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg> Voir sur Maps</a>
+  </div>
+
+  <div class="card">
+    <div class="card-inner">
+      <div class="card-top">
+        <div><div class="card-name">Halensee</div><div class="card-meta">Wilmersdorf · S Halensee</div></div>
+      </div>
+      <div class="tags"><span class="tag tag-blue">Central · Spontané</span></div>
+      <p class="card-desc">Le lac le plus central de Berlin, à 2 min du S-Bahn. Pas le plus grand mais parfait pour une baignade spontanée sans traverser toute la ville. Calme en semaine.</p>
+    </div>
+    <a class="map-btn" href="https://maps.google.com/?q=Halensee+Berlin" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg> Voir sur Maps</a>
+  </div>
+</section>
+
+<!-- RESTAURANTS -->
+<section id="restos">
+  <div class="sec-head">
+    <div class="sec-icon">🍽</div>
+    <h2 class="sec-title">Restaurants</h2>
+    <span class="sec-count">28 adresses</span>
+  </div>
+
+  <div class="filter-pills">
+    <a class="fpill" href="#" onclick="scrollToSub('r-burgers');return false">🍔 Burgers</a>
+    <a class="fpill" href="#" onclick="scrollToSub('r-asiatique');return false">🌏 Asiatique</a>
+    <a class="fpill" href="#" onclick="scrollToSub('r-levant');return false">🫓 Levant</a>
+    <a class="fpill" href="#" onclick="scrollToSub('r-epice');return false">🌶 Épicé</a>
+    <a class="fpill" href="#" onclick="scrollToSub('r-italien');return false">🍝 Italien</a>
+    <a class="fpill" href="#" onclick="scrollToSub('r-tables');return false">✨ Très bon (€€)</a>
+  </div>
+
+  <div id="r-burgers" class="sub-head">🍔 Burgers</div>
+
+  <div class="card">
+    <div class="card-inner">
+      <div class="card-top">
+        <div><div class="card-name">Burgeramt</div><div class="card-meta">Kreuzberg</div></div>
+      </div>
+      <div class="tags"><span class="tag tag-red">Classique Berlin ⭐</span></div>
+      <p class="card-desc">L'une des meilleures adresses burger de Berlin. Viande de qualité, cuisson parfaite, pain maison. Simple, direct, efficace — comme un bon burger doit l'être.</p>
+    </div>
+    <a class="map-btn" href="https://maps.google.com/?q=Burgeramt+Berlin+Kreuzberg" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg> Voir sur Maps</a>
+  </div>
+
+  <div class="card">
+    <div class="card-inner">
+      <div class="card-top">
+        <div><div class="card-name">VEG'D</div><div class="card-meta">Berlin</div></div>
+      </div>
+      <div class="tags"><span class="tag tag-green">Vegan ⭐</span></div>
+      <p class="card-desc">Les meilleurs burgers vegans de Berlin. Galettes maison, toppings créatifs, sauces qui font la différence. Même les non-végans repartent conquis.</p>
+    </div>
+    <a class="map-btn" href="https://maps.google.com/?q=VEG'D+Berlin" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg> Voir sur Maps</a>
+  </div>
+
+  <div class="card">
+    <div class="card-inner">
+      <div class="card-top">
+        <div><div class="card-name">Burger Pannierstraße #1</div><div class="card-meta">Neukölln</div></div>
+      </div>
+      <div class="tags"><span class="tag tag-red">Neukölln</span></div>
+      <p class="card-desc">À compléter — l'un des meilleurs burgers de Pannierstraße.</p>
+    </div>
+    <a class="map-btn" href="https://maps.google.com/?q=Pannierstraße+Neukölln+Berlin" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg> Voir sur Maps</a>
+  </div>
+
+  <div class="card">
+    <div class="card-inner">
+      <div class="card-top">
+        <div><div class="card-name">Burger Pannierstraße #2</div><div class="card-meta">Neukölln</div></div>
+      </div>
+      <div class="tags"><span class="tag tag-red">Neukölln</span></div>
+      <p class="card-desc">À compléter — l'un des meilleurs burgers de Pannierstraße.</p>
+    </div>
+    <a class="map-btn" href="https://maps.google.com/?q=Pannierstraße+Neukölln+Berlin" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg> Voir sur Maps</a>
+  </div>
+
+  <div id="r-asiatique" class="sub-head">🌏 Asiatique</div>
+
+  <div class="card">
+    <div class="card-inner">
+      <div class="card-top">
+        <div><div class="card-name">1990 Vegan Living</div><div class="card-meta">Friedrichshain</div></div>
+      </div>
+      <div class="tags"><span class="tag tag-green">Vegan ⭐</span></div>
+      <p class="card-desc">Ouvert après la chute du Mur, un des restaurants vegan les plus aimés. Petits bols à partager, pho vegan, café spécial. File d'attente le soir.</p>
+    </div>
+    <a class="map-btn" href="https://maps.google.com/?q=1990+Vegan+Living+Berlin" target="_blank"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg> Voir sur Maps</a>
+  </div>
+
+  <div class="card">
+    <div class="card-inner">
+      <div class="card-top">
+        <div><div class="card-name">Quà Phê</div><div class="card-meta">Mitte</div></div>
+      </div>
+      <div class="tags"><span class="tag tag-red">Tendance · Déjeuner</span></div>
+      <p class="card-desc">Banh bao, rouleaux de bœuf, chicken vermicelli. Ambiance moderne. Banh mi en moins de 10 min. Excellent pour le déjeuner.</p>
+    </div>
+    <a class="map-btn" href="https://maps.google.com/?q=Quà+Phê+Berlin" target="_blank"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg> Voir sur Maps</a>
+  </div>
+
+  <div class="card">
+    <div class="card-inner">
+      <div class="card-top">
+        <div><div class="card-name">District Mot</div><div class="card-meta">Mitte</div></div>
+      </div>
+      <div class="tags"><span class="tag tag-blue">Ouvert jusqu'à minuit</span></div>
+      <p class="card-desc">Cuisine vietnamienne créative. Ouvert tous les jours jusqu'à minuit. Bon rapport qualité-prix, plats frais et généreux.</p>
+    </div>
+    <a class="map-btn" href="https://maps.google.com/?q=District+Mot+Berlin" target="_blank"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg> Voir sur Maps</a>
+  </div>
+
+  <div class="card">
+    <div class="card-inner">
+      <div class="card-top">
+        <div><div class="card-name">Duc Anh — Dong Xuan Center</div><div class="card-meta">Lichtenberg</div></div>
+      </div>
+      <div class="tags"><span class="tag tag-red">Authentique</span><span class="tag tag-gold">Insolite</span></div>
+      <p class="card-desc">Caché dans le grand marché asiatique — la cuisine la plus authentique de Berlin. Pho xao, rouleaux de crabe. 30 min du centre.</p>
+    </div>
+    <a class="map-btn" href="https://maps.google.com/?q=Dong+Xuan+Center+Berlin+Lichtenberg" target="_blank"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg> Voir sur Maps</a>
+  </div>
+
+  <div class="card">
+    <div class="card-inner">
+      <div class="card-top">
+        <div><div class="card-name">5 Elements</div><div class="card-meta">Berlin</div></div>
+      </div>
+      <div class="tags"><span class="tag tag-red">Thaï · Pan-asiatique</span></div>
+      <p class="card-desc">Restaurant asiatique au beau choix de plats thaïs et pan-asiatiques. Currys savoureux, soupes, plats sautés. Rapport qualité-prix excellent.</p>
+    </div>
+    <a class="map-btn" href="https://maps.google.com/?q=5+Elements+Restaurant+Berlin" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg> Voir sur Maps</a>
+  </div>
+
+  <div class="card">
+    <div class="card-inner">
+      <div class="card-top">
+        <div><div class="card-name">Umami</div><div class="card-meta">Berlin</div></div>
+      </div>
+      <div class="tags"><span class="tag tag-blue">Vietnamese</span></div>
+      <p class="card-desc">Cuisine vietnamienne moderne avec une touche japonaise. Plats frais et savoureux, ambiance cosy.</p>
+    </div>
+    <a class="map-btn" href="https://maps.google.com/?q=Umami+Restaurant+Berlin" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg> Voir sur Maps</a>
+  </div>
+
+  <div class="card">
+    <div class="card-inner">
+      <div class="card-top">
+        <div><div class="card-name">Sushi Gang</div><div class="card-meta">Berlin</div></div>
+      </div>
+      <div class="tags"><span class="tag tag-blue">Japonais · Sushi</span></div>
+      <p class="card-desc">Sushis frais et créatifs dans une ambiance décontractée. Belle sélection de rolls et de pièces nigiri — qualité au rendez-vous.</p>
+    </div>
+    <a class="map-btn" href="https://maps.google.com/?q=Sushi+Gang+Berlin" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg> Voir sur Maps</a>
+  </div>
+
+  <div id="r-levant" class="sub-head">🫓 Levant</div>
+
+  <div class="card">
+    <div class="card-inner">
+      <div class="card-top">
+        <div><div class="card-name">Oggi's Gemüsekebab</div><div class="card-meta">Prenzlauer Berg</div></div>
+      </div>
+      <div class="tags"><span class="tag tag-red">Légumes ⭐</span><span class="tag tag-green">~5–8€</span></div>
+      <p class="card-desc">Kebab légumes dans la grande tradition berlinoise. Pain croustillant, légumes grillés généreux, sauces maison.</p>
+    </div>
+    <a class="map-btn" href="https://maps.app.goo.gl/x3x242sJtuC4bo3S7" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg> Voir sur Maps</a>
+  </div>
+
+  <div class="card">
+    <div class="card-inner">
+      <div class="card-top">
+        <div><div class="card-name">Heimweh</div><div class="card-meta">Kreuzberg</div></div>
+      </div>
+      <div class="tags"><span class="tag tag-red">Maison · ~9–10€</span></div>
+      <p class="card-desc">Manti (raviolis turcs), pommes de terre garnies, plats du jour. Cuisine faite maison, portions XXL, prix doux.</p>
+    </div>
+    <a class="map-btn" href="https://maps.google.com/?q=Heimweh+Restaurant+Berlin+Skalitzer" target="_blank"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg> Voir sur Maps</a>
+  </div>
+
+  <div class="card">
+    <div class="card-inner">
+      <div class="card-top">
+        <div><div class="card-name">Hisar</div><div class="card-meta">Schöneberg</div></div>
+      </div>
+      <div class="tags"><span class="tag tag-gold">30 ans · Classique</span></div>
+      <p class="card-desc">Depuis 30 ans, döner et lahmacun selon la tradition. Ingrédients frais, viande de qualité, prix raisonnables.</p>
+    </div>
+    <a class="map-btn" href="https://maps.google.com/?q=Hisar+Berlin+Schöneberg" target="_blank"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg> Voir sur Maps</a>
+  </div>
+
+  <div class="card">
+    <div class="card-inner">
+      <div class="card-top">
+        <div><div class="card-name">Köfte Ma</div><div class="card-meta">Prenzlauer Berg</div></div>
+      </div>
+      <div class="tags"><span class="tag tag-red">Turc rapide</span></div>
+      <p class="card-desc">Köfte anatoliennes, döner, Çiğ Köfte végé, sandwichs — tout préparé frais. Idéal pour un repas rapide et rassasiant.</p>
+    </div>
+    <a class="map-btn" href="https://maps.google.com/?q=Köfte+Ma+Berlin+Prenzlauer+Berg" target="_blank"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg> Voir sur Maps</a>
+  </div>
+
+  <div class="card">
+    <div class="card-inner">
+      <div class="card-top">
+        <div><div class="card-name">Akle</div><div class="card-meta">Berlin · Libanais</div></div>
+      </div>
+      <div class="tags"><span class="tag tag-gold">Libanais</span></div>
+      <p class="card-desc">Cuisine libanaise authentique — mezze, grillades, fattoush. Généreuse et savoureuse.</p>
+    </div>
+    <a class="map-btn" href="https://maps.google.com/?q=Akle+Lebanese+Cuisine+Berlin" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg> Voir sur Maps</a>
+  </div>
+
+  <div class="card">
+    <div class="card-inner">
+      <div class="card-top">
+        <div><div class="card-name">Salamat</div><div class="card-meta">Berlin</div></div>
+      </div>
+      <div class="tags"><span class="tag tag-gold">Levant</span></div>
+      <p class="card-desc">Cuisine du Levant chaleureuse et généreuse. Plats partagés, saveurs profondes.</p>
+    </div>
+    <a class="map-btn" href="https://maps.google.com/?q=Salamat+Restaurant+Berlin" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg> Voir sur Maps</a>
+  </div>
+
+  <div class="card">
+    <div class="card-inner">
+      <div class="card-top">
+        <div><div class="card-name">Hummus Sapiens</div><div class="card-meta">Berlin</div></div>
+      </div>
+      <div class="tags"><span class="tag tag-green">Végé friendly</span><span class="tag tag-gold">Hummus</span></div>
+      <p class="card-desc">Le hummus comme plat principal — crémeux, chaud, garni. Falafel, aubergines grillées, pain pita. Simple et très bon.</p>
+    </div>
+    <a class="map-btn" href="https://maps.google.com/?q=Hummus+Sapiens+Berlin" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg> Voir sur Maps</a>
+  </div>
+
+  <div class="card">
+    <div class="card-inner">
+      <div class="card-top">
+        <div><div class="card-name">Aleppo Supper Club</div><div class="card-meta">Berlin · Syrien</div></div>
+      </div>
+      <div class="tags"><span class="tag tag-red">Syrien ⭐</span></div>
+      <p class="card-desc">Cuisine syrienne d'Alep — l'une des grandes traditions culinaires du Moyen-Orient. Kibbeh, muhammara, plats mijotés aux épices rares.</p>
+    </div>
+    <a class="map-btn" href="https://maps.google.com/?q=Aleppo+Supper+Club+Berlin" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg> Voir sur Maps</a>
+  </div>
+
+  <div class="card">
+    <div class="card-inner">
+      <div class="card-top">
+        <div><div class="card-name">Café Pilz</div><div class="card-meta">Berlin</div></div>
+      </div>
+      <div class="tags"><span class="tag tag-gold">Levant</span><span class="tag tag-blue">Cosy</span></div>
+      <p class="card-desc">Café-restaurant au concept original autour du champignon. Plats créatifs, ambiance chaleureuse, cuisine de saison soignée.</p>
+    </div>
+    <a class="map-btn" href="https://maps.google.com/?q=Café+Pilz+Berlin" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg> Voir sur Maps</a>
+  </div>
+
+  <div id="r-italien" class="sub-head">🍝 Italien</div>
+
+  <div class="card">
+    <div class="card-inner">
+      <div class="card-top">
+        <div><div class="card-name">Café Botánico</div><div class="card-meta">Berlin</div></div>
+      </div>
+      <div class="tags"><span class="tag tag-green">Végétal · Saison</span></div>
+      <p class="card-desc">Cuisine végétale et de saison dans un cadre soigné. Plats inventifs, produits frais, ambiance botanique apaisante.</p>
+    </div>
+    <a class="map-btn" href="https://maps.google.com/?q=Café+Botánico+Berlin" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg> Voir sur Maps</a>
+  </div>
+
+  <div class="card">
+    <div class="card-inner">
+      <div class="card-top">
+        <div><div class="card-name">La Bolognina</div><div class="card-meta">Neukölln</div></div>
+      </div>
+      <div class="tags"><span class="tag tag-red">Trattoria</span></div>
+      <p class="card-desc">Trattoria italienne à l'ancienne. Pâtes fraîches, ragù bolognaise, ambiance familiale. Simple et sincère.</p>
+    </div>
+    <a class="map-btn" href="https://maps.app.goo.gl/MqAK4xptkDhxcU5m9" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg> Voir sur Maps</a>
+  </div>
+
+  <div class="card">
+    <div class="card-inner">
+      <div class="card-top">
+        <div><div class="card-name">Centro Italia</div><div class="card-meta">Prenzlauer Berg · S Greifswalder</div></div>
+      </div>
+      <div class="tags"><span class="tag tag-red">Épicerie · Caviste</span></div>
+      <p class="card-desc">Épicerie et caviste italiens — huiles, pâtes, charcuteries, vins importés. Le midi : cantine avec des plats de pâtes faits maison.</p>
+    </div>
+    <a class="map-btn" href="https://maps.app.goo.gl/De7vUZr1xihv2tqW7" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg> Voir sur Maps</a>
+  </div>
+
+  <div id="r-epice" class="sub-head">🌶 Épicé</div>
+
+  <div class="card">
+    <div class="card-inner">
+      <div class="card-top">
+        <div><div class="card-name">Liu</div><div class="card-meta">Berlin</div></div>
+      </div>
+      <div class="tags"><span class="tag tag-red">🌶 Sichuanais</span></div>
+      <p class="card-desc">Cuisine sichuanaise authentique et bien relevée. Mapo tofu, nouilles épicées, plats en sauce pimentée. Pour les amateurs de feu — les plats sont vraiment chauds.</p>
+    </div>
+    <a class="map-btn" href="https://maps.google.com/?q=Liu+Restaurant+Berlin" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg> Voir sur Maps</a>
+  </div>
+
+  <div class="card">
+    <div class="card-inner">
+      <div class="card-top">
+        <div><div class="card-name">Weng Chen</div><div class="card-meta">Berlin</div></div>
+      </div>
+      <div class="tags"><span class="tag tag-red">🌶 Épicé</span></div>
+      <p class="card-desc">Restaurant asiatique aux plats bien relevés. Nouilles, soupes et woks avec du caractère. Idéal si vous aimez les saveurs intenses et le piment qui réchauffe.</p>
+    </div>
+    <a class="map-btn" href="https://maps.google.com/?q=Weng+Chen+Restaurant+Berlin" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg> Voir sur Maps</a>
+  </div>
+
+  <div id="r-tables" class="sub-head">✨ Très bon (€€)</div>
+
+  <div class="card">
+    <div class="card-inner">
+      <div class="card-top">
+        <div><div class="card-name">Cielo Wienbar</div><div class="card-meta">Berlin</div></div>
+      </div>
+      <div class="tags"><span class="tag tag-gold">Vins naturels</span></div>
+      <p class="card-desc">Wine bar à l'ambiance intime. Belle sélection de vins naturels, petites assiettes soignées. Parfait pour un verre qui dure.</p>
+    </div>
+    <a class="map-btn" href="https://maps.google.com/?q=Cielo+Wienbar+Berlin" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg> Voir sur Maps</a>
+  </div>
+
+  <div class="card">
+    <div class="card-inner">
+      <div class="card-top">
+        <div><div class="card-name">Gotxa</div><div class="card-meta">Berlin</div></div>
+      </div>
+      <div class="tags"><span class="tag tag-red">€€</span></div>
+      <p class="card-desc">Restaurant de quartier à Neukölln, un cran au-dessus du quotidien. Cuisine soignée, portions généreuses.</p>
+    </div>
+    <a class="map-btn" href="https://maps.app.goo.gl/4HeJ45e4tMq42QdM8" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg> Voir sur Maps</a>
+  </div>
+
+
+</section>
+
+<!-- BARS -->
+<section id="bars">
+  <div class="sec-head">
+    <div class="sec-icon">🍺</div>
+    <h2 class="sec-title">Bars</h2>
+    <span class="sec-count">10 bars</span>
+  </div>
+
+  <div class="sub-head">🌿 Biergarten</div>
+
+  <div class="card">
+    <div class="card-inner">
+      <div class="card-top">
+        <div><div class="card-name">Prater Garten</div><div class="card-meta">Prenzlauer Berg</div></div>
+      </div>
+      <div class="tags"><span class="tag tag-green">Depuis 1837</span><span class="tag tag-gold">Le plus ancien</span></div>
+      <p class="card-desc">Le plus ancien Biergarten de Berlin sous les marronniers. Pression berlinoise, saucisses, tables en bois — l'esprit d'un autre siècle en plein Prenzlauer Berg.</p>
+    </div>
+    <a class="map-btn" href="https://maps.google.com/?q=Prater+Garten+Berlin" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg> Voir sur Maps</a>
+  </div>
+
+  <div class="card">
+    <div class="card-inner">
+      <div class="card-top">
+        <div><div class="card-name">Schleusenkrug</div><div class="card-meta">Tiergarten · Landwehrkanal</div></div>
+      </div>
+      <div class="tags"><span class="tag tag-green">Biergarten</span><span class="tag tag-gold">Classique</span></div>
+      <p class="card-desc">Biergarten emblématique au bord de l'écluse du Landwehrkanal, à deux pas du Tiergarten. Bières pression, saucisses, grande terrasse ombragée. Un incontournable de l'été berlinois.</p>
+    </div>
+    <a class="map-btn" href="https://maps.app.goo.gl/ffRKr8KneFaXqmfTA" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg> Voir sur Maps</a>
+  </div>
+
+  <div class="card">
+    <div class="card-inner">
+      <div class="card-top">
+        <div><div class="card-name">Café am Neuen See</div><div class="card-meta">Tiergarten · Au bord du lac</div></div>
+      </div>
+      <div class="tags"><span class="tag tag-green">Biergarten ⭐</span><span class="tag tag-blue">Pédalos</span></div>
+      <p class="card-desc">Le biergarten iconique du Tiergarten, au bord du Neuer See. Grande terrasse sous les arbres, pédalos sur le lac, pizza au feu de bois. Cadre idyllique, très animé le week-end.</p>
+    </div>
+    <a class="map-btn" href="https://maps.app.goo.gl/qtW6vYkBvJrEWey49" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg> Voir sur Maps</a>
+  </div>
+
+  <div class="card">
+    <div class="card-inner">
+      <div class="card-top">
+        <div><div class="card-name">Biergarten Insel der Jugend</div><div class="card-meta">Treptow · Île sur la Spree</div></div>
+      </div>
+      <div class="tags"><span class="tag tag-green">Biergarten</span><span class="tag tag-gold">Île · Concerts</span></div>
+      <p class="card-desc">Biergarten sur une petite île de la Spree à Treptow. Ambiance bohème, concerts live, vue sur l'eau. Un des spots les plus charmants de l'été à Berlin.</p>
+    </div>
+    <a class="map-btn" href="https://maps.app.goo.gl/33zCu1JVMfMPF4xr5" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg> Voir sur Maps</a>
+  </div>
+
+  <div class="sub-head">🌳 Incontournables</div>
+
+  <div class="card">
+    <div class="card-inner">
+      <div class="card-top">
+        <div><div class="card-name">Klunkerkranich</div><div class="card-meta">Neukölln · Toit du parking</div></div>
+      </div>
+      <div class="tags"><span class="tag tag-blue">Rooftop ⭐</span></div>
+      <p class="card-desc">Bar perché sur le toit du parking des Neukölln Arcaden. Vue panoramique, jardin suspendu, concerts. Entrée payante le soir mais ça vaut chaque centime.</p>
+    </div>
+    <a class="map-btn" href="https://maps.google.com/?q=Klunkerkranich+Berlin" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg> Voir sur Maps</a>
+  </div>
+
+  <div class="sub-head">🍺 Bars à bières artisanales</div>
+
+  <div class="card">
+    <div class="card-inner">
+      <div class="card-top">
+        <div><div class="card-name">Muted Horn</div><div class="card-meta">Neukölln</div></div>
+      </div>
+      <div class="tags"><span class="tag tag-blue">Craft Beer</span><span class="tag tag-gold">Pub ambiance</span></div>
+      <p class="card-desc">Pub convivial de Neukölln avec une excellente sélection de bières pression et en bouteille. Ambiance détendue, clientèle de quartier. Le soir y devient facilement la nuit.</p>
+    </div>
+    <a class="map-btn" href="https://maps.google.com/?q=Muted+Horn+Berlin" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg> Voir sur Maps</a>
+  </div>
+
+  <div class="card">
+    <div class="card-inner">
+      <div class="card-top">
+        <div><div class="card-name">Protokoll</div><div class="card-meta">Kreuzberg</div></div>
+      </div>
+      <div class="tags"><span class="tag tag-blue">Craft Beer · Vins naturels</span></div>
+      <p class="card-desc">Bar minimaliste avec une sélection soignée de bières artisanales et vins naturels. Ambiance posée, bons conseils. Pour boire sérieusement et bien.</p>
+    </div>
+    <a class="map-btn" href="https://maps.google.com/?q=Protokoll+Bar+Berlin" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg> Voir sur Maps</a>
+  </div>
+
+  <div class="card">
+    <div class="card-inner">
+      <div class="card-top">
+        <div><div class="card-name">Manifest</div><div class="card-meta">Berlin</div></div>
+      </div>
+      <div class="tags"><span class="tag tag-blue">Craft Beer</span></div>
+      <p class="card-desc">Bar à bières artisanales à la sélection en rotation permanente. Brasseries locales et internationales, staff passionné. Une belle découverte à chaque visite.</p>
+    </div>
+    <a class="map-btn" href="https://maps.google.com/?q=Manifest+Bar+Berlin" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg> Voir sur Maps</a>
+  </div>
+
+  <div class="card">
+    <div class="card-inner">
+      <div class="card-top">
+        <div><div class="card-name">Vagabund</div><div class="card-meta">Wedding</div></div>
+      </div>
+      <div class="tags"><span class="tag tag-blue">Craft Beer</span></div>
+      <p class="card-desc">Bar à bières artisanales avec une sélection de brasseries locales et internationales. Atmosphère décontractée, parfait pour une soirée sans prise de tête.</p>
+    </div>
+    <a class="map-btn" href="https://www.google.com/maps/place/Vagabund+Brauerei+Kesselhaus/@52.5530128,13.3569171,17z/data=!3m2!4b1!5s0x47a853d4a4b7e17b:0xe3b81a17461133e9!4m6!3m5!1s0x47a8539b906c17d3:0x1fd5334933c031ed!8m2!3d52.5530096!4d13.359492!16s%2Fg%2F11jr00ynm9?entry=ttu&g_ep=EgoyMDI2MDYxNi4wIKXMDSoASAFQAw%3D%3D" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg> Voir sur Maps</a>
+  </div>
+
+  <div class="card">
+    <div class="card-inner">
+      <div class="card-top">
+        <div><div class="card-name">Straßenbräu</div><div class="card-meta">Friedrichshain · Ostkreuz</div></div>
+      </div>
+      <div class="tags"><span class="tag tag-red">Brasserie maison</span><span class="tag tag-green">Grande terrasse</span></div>
+      <p class="card-desc">Brasserie artisanale à deux pas d'Ostkreuz. Bières brassées sur place servies en pression, grande terrasse estivale. La pression maison est toujours la meilleure.</p>
+    </div>
+    <a class="map-btn" href="https://maps.google.com/?q=Straßenbräu+Ostkreuz+Berlin" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg> Voir sur Maps</a>
+  </div>
+</section>
+
+<!-- CAFÉS -->
+<section id="cafes">
+  <div class="sec-head">
+    <div class="sec-icon">☕</div>
+    <h2 class="sec-title">Cafés</h2>
+    <span class="sec-count">3 sélections</span>
+  </div>
+
+  <div class="maison-card">
+    <div class="maison-head">
+      <div class="maison-badge">Boulangerie française 🥐</div>
+      <div class="maison-name">La Maison</div>
+      <div class="maison-desc">Croissants au beurre, jambon-beurre transcendant, kouign-amann, financiers… La meilleure boulangerie française artisanale de Berlin. 4 adresses.</div>
+    </div>
+    <div class="maison-locs">
+      <div class="mloc">
+        <div class="mloc-txt">
+          <div class="mloc-name">Paul-Lincke-Ufer 17, Kreuzberg</div>
+          <div class="mloc-hours">Lun–Jeu 7h–19h · Ven 7h–20h · Sam 8h–20h · Dim 8h–19h</div>
+        </div>
+        <a class="mloc-link" href="https://maps.google.com/?q=La+Maison+Paul-Lincke-Ufer+Berlin" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" fill="none"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="10" r="3" stroke="currentColor" stroke-width="2"/></svg></a>
+      </div>
+      <div class="mloc">
+        <div class="mloc-txt">
+          <div class="mloc-name">Urbanstraße 70A, Kreuzberg</div>
+          <div class="mloc-hours">Lun–Ven 7h–18h · Sam–Dim 8h–18h</div>
+        </div>
+        <a class="mloc-link" href="https://maps.google.com/?q=La+Maison+Urbanstraße+Berlin" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" fill="none"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="10" r="3" stroke="currentColor" stroke-width="2"/></svg></a>
+      </div>
+      <div class="mloc">
+        <div class="mloc-txt">
+          <div class="mloc-name">Herrfurthplatz 14, Neukölln</div>
+          <div class="mloc-hours">Lun–Jeu 8h–17h · Ven–Sam 8h–18h · Dim 8h–17h</div>
+        </div>
+        <a class="mloc-link" href="https://maps.google.com/?q=La+Maison+Herrfurthplatz+Berlin" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" fill="none"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="10" r="3" stroke="currentColor" stroke-width="2"/></svg></a>
+      </div>
+      <div class="mloc">
+        <div class="mloc-txt">
+          <div class="mloc-name">Raumerstr. 8, Prenzlauer Berg</div>
+          <div class="mloc-hours">Sam–Dim 8h–14h uniquement</div>
+        </div>
+        <a class="mloc-link" href="https://maps.google.com/?q=La+Maison+Raumerstraße+Berlin" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" fill="none"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="10" r="3" stroke="currentColor" stroke-width="2"/></svg></a>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-inner">
+      <div class="card-top">
+        <div><div class="card-name">back.art</div><div class="card-meta">Berlin</div></div>
+      </div>
+      <div class="tags"><span class="tag tag-gold">Pâtisserie</span><span class="tag tag-red">Artisanal</span></div>
+      <p class="card-desc">Boulangerie-pâtisserie artisanale avec des créations soignées. Gâteaux, tartes et viennoiseries qui valent le détour. Beaucoup de soin dans chaque pièce.</p>
+    </div>
+    <a class="map-btn" href="https://maps.google.com/?q=back.art+Berlin" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg> Voir sur Maps</a>
+  </div>
+
+  <div class="card">
+    <div class="card-inner">
+      <div class="card-top">
+        <div><div class="card-name">Albatross</div><div class="card-meta">Berlin</div></div>
+      </div>
+      <div class="tags"><span class="tag tag-blue">Café spécialité</span></div>
+      <p class="card-desc">Café spécialité dans une ambiance soignée. Bons extracteurs, méthodes filtre, latte art. Une adresse sérieuse pour les amateurs de bon café.</p>
+    </div>
+    <a class="map-btn" href="https://maps.google.com/?q=Albatross+Café+Berlin" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg> Voir sur Maps</a>
+  </div>
+</section>
+</main>
+
+<script>
+function scrollToSub(id) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  const top = el.getBoundingClientRect().top + window.scrollY - 16;
+  window.scrollTo({top, behavior: 'smooth'});
+}
+
+const btns = document.querySelectorAll('.nav-btn');
+const sections = document.querySelectorAll('section');
+btns.forEach(btn => {
+  btn.addEventListener('click', e => {
+    e.preventDefault();
+    const id = btn.dataset.section;
+    btns.forEach(b => b.classList.remove('active'));
+    sections.forEach(s => s.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById(id).classList.add('active');
+    window.scrollTo({top:0,behavior:'instant'});
+  });
+});
+</script>
+</body>
+</html>
